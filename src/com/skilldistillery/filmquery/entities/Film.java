@@ -228,7 +228,7 @@ public class Film {
 		builder.append(specialFeatures);
 		builder.append(", cast: ");
 		builder.append(cast);
-		builder.append("]");
+		builder.append(".");
 		return builder.toString();
 	}
 

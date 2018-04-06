@@ -18,12 +18,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmById(int filmId) {
-		Connection conn;
-		String sql;
+		String sql = "SELECT id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features FROM film WHERE id = ?";
 		Film film = null;
 		try {
-			conn = DriverManager.getConnection(URL, user, pass);
-			sql = "SELECT id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features FROM film WHERE id = ?";
+			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
@@ -46,8 +44,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 			}
 		} catch (SQLException sqlex) {
-			System.err.println("Error retrieving film. Exiting");
-			System.exit(1);
+			System.err.println("Error retrieving film id "+filmId);
+			sqlex.printStackTrace();
 		}
 
 		return film;
@@ -88,8 +86,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.close();
 			conn.close();
 		} catch (SQLException sqlex) {
-			System.err.println("Error retrieving film. Exiting");
-			System.exit(1);
+			System.err.println("Error retrieving ACTOR ID." + actorId);
+			sqlex.printStackTrace();
 		}
 
 		return actor;
@@ -107,8 +105,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				int id = rs.getInt(1);
-				String fName = rs.getString(4);
-				String lName = rs.getString(5);
+				String fName = rs.getString(2);
+				String lName = rs.getString(3);
 				Actor actor = new Actor(id, fName, lName);
 				cast.add(actor);
 
@@ -117,11 +115,46 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.close();
 			conn.close();
 		} catch (SQLException sqlex) {
-			System.err.println("Error retrieving film. Exiting");
-			System.exit(1);
+			System.err.println("Error retrieving actors for film "  + filmId);
+			sqlex.printStackTrace();
 		}
 
 		return cast;
 	}
+
+	@Override
+	public Film getFilmByKeyword(String keyword) {
+		String sql = "SELECT id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_feature WHERE title like ? OR description like ?";
+		Film film = null;
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1,"%" + keyword + "%");
+			stmt.setString(2, "%" + keyword + "%");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				int id = rs.getInt(1);
+				String title = rs.getString(2);
+				String description = rs.getString(3);
+				Date releaseYear = rs.getDate(4);
+				int languageId = rs.getInt(5);
+				int rentalDuration = rs.getInt(6);
+				double rentalRate = rs.getDouble(7);
+				int length = rs.getInt(8);
+				double replaceCost = rs.getDouble(9);
+				String rating = rs.getString(10);
+				String specialFeatures = rs.getString(11);
+				
+				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length, replaceCost, rating, specialFeatures);
+
+			}
+		} catch (SQLException sqlex) {
+			System.err.println("Error retrieving film id "+keyword);
+			sqlex.printStackTrace();
+		}
+
+		return film;
+	}
+
 
 }

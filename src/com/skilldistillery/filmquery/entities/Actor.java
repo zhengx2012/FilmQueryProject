@@ -6,7 +6,7 @@ public class Actor {
 	private int id;
 	private String firstName;
 	private String lastName;
-	
+
 	public Actor() {
 	}
 
@@ -63,18 +63,5 @@ public class Actor {
 		builder.append(".");
 		return builder.toString();
 	}
-	
-	public String toString1() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Actor id: ");
-		builder.append(id);
-		builder.append(", firstName: ");
-		builder.append(firstName);
-		builder.append(", lastName: ");
-		builder.append(lastName);
-		builder.append(".");
-		return builder.toString();
-	}
-	
-	
+
 }
