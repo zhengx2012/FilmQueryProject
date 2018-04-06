@@ -30,39 +30,50 @@ public class FilmQueryApp {
 
 	private void launch() {
 		Scanner input = new Scanner(System.in);
+		int lookUp = 0;
+		
+		do {
 
-		System.out.println("Would you like to:");
-		System.out.println("1. Look up films by ID?");
-		System.out.println("2. Look up films by keywords?");
-		System.out.println("3. Exit");
-		int lookUp = input.nextInt();
+			System.out.println("\nWould you like to:");
+			System.out.println("\t1. Look up films by ID?");
+			System.out.println("\t2. Look up films by keywords?");
+			System.out.println("\t3. Exit");
+			lookUp = input.nextInt();
 
-		if (lookUp == 1) {
-			System.out.print("\nWhat is the film ID? ");
-			int filmId = input.nextInt();
-			db.getFilmById(filmId);
+			if ((lookUp < 1) || (lookUp > 3)) {
+				System.out.println("\n********Please enter a number from 1-3********");
+				launch();
+			} else if (lookUp == 1) {
+				System.out.print("\nWhat is the film ID? ");
+				int filmId = input.nextInt();
+				Film film = db.getFilmById(filmId);
+				printFilm(film);
 
+			} else if (lookUp == 2) {
+				System.out.print("\nWhat is the keyword you would like to look up? ");
+				String keyword = input.next();
+				Film film = db.getFilmByKeyword(keyword);
+				printFilm(film);
+
+			} else if (lookUp == 3) {
+				System.out.print("\nThanks for checking us out, seeya!");
+				System.exit(0);
+			}
 		}
-		if (lookUp == 2) {
-			System.out.print("\nWhat is the keyword you would like to look up? ");
-			String keyword = input.next();
-			db.getFilmByKeyword(keyword);
 
-		}
-		if (lookUp == 3) {
-			System.out.print("\nThanks for checking us out, seeya!");
-			System.exit(0);
+		while (lookUp != 0);
 
-		}
-	}
-
-	startUserInterface(input);
+		startUserInterface(input);
 
 		input.close();
 	}
 
 	private void startUserInterface(Scanner input) {
 
+	}
+
+	private void printFilm(Film film) {
+		System.out.println(film);
 	}
 
 }

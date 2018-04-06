@@ -37,14 +37,14 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				double replaceCost = rs.getDouble(9);
 				String rating = rs.getString(10);
 				String specialFeatures = rs.getString(11);
-				
-				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length, replaceCost, rating, specialFeatures);
+
+				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
+						replaceCost, rating, specialFeatures);
 				List<Actor> cast = getActorsByFilmId(film.getId());
-				
 
 			}
 		} catch (SQLException sqlex) {
-			System.err.println("Error retrieving film id "+filmId);
+			System.err.println("Error retrieving film id " + filmId);
 			sqlex.printStackTrace();
 		}
 
@@ -115,7 +115,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.close();
 			conn.close();
 		} catch (SQLException sqlex) {
-			System.err.println("Error retrieving actors for film "  + filmId);
+			System.err.println("Error retrieving actors for film " + filmId);
 			sqlex.printStackTrace();
 		}
 
@@ -124,12 +124,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmByKeyword(String keyword) {
-		String sql = "SELECT id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_feature WHERE title like ? OR description like ?";
+		String sql = "SELECT id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features FROM film WHERE title like ? OR description like ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1,"%" + keyword + "%");
+			stmt.setString(1, "%" + keyword + "%");
 			stmt.setString(2, "%" + keyword + "%");
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -144,17 +144,17 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				double replaceCost = rs.getDouble(9);
 				String rating = rs.getString(10);
 				String specialFeatures = rs.getString(11);
-				
-				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length, replaceCost, rating, specialFeatures);
+
+				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
+						replaceCost, rating, specialFeatures);
 
 			}
 		} catch (SQLException sqlex) {
-			System.err.println("Error retrieving film id "+keyword);
+			System.err.println("Error retrieving film id " + keyword);
 			sqlex.printStackTrace();
 		}
 
 		return film;
 	}
-
 
 }
