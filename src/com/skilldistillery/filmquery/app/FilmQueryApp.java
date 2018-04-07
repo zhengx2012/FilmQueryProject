@@ -57,9 +57,7 @@ public class FilmQueryApp {
 			System.out.print("\nWhat is the film ID? ");
 			int filmId = input.nextInt();
 			Film film = db.getFilmById(filmId);
-			if (film == null) {
-				startUserInterface(lookUp);
-			}
+			
 			printFilm(film);
 
 		} 
