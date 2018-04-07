@@ -35,9 +35,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					String language = rs.getString(5);
 					int id = rs.getInt(6);
 					
-					film = new Film(title, releaseYear, rating, language, description);
-					film.setId(id);
-					List<Actor> cast = getActorsByFilmId(film.getId());
+					List<Actor> cast = getActorsByFilmId(id);
 					film = new Film(title, releaseYear, rating, cast, language, description);
 					count++;
 
@@ -157,18 +155,15 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					String language = rs.getString(5);
 					int id = rs.getInt(6);
 
-					film = new Film(title, releaseYear, language, rating, description);
-					film.setId(id);
-					List<Actor> cast = getActorsByFilmId(film.getId());
+					List<Actor> cast = getActorsByFilmId(id);
 					film = new Film(title, releaseYear, rating, cast, language, description);
-					count++;
 				}
 
 				rs.close();
 				stmt.close();
 				conn.close();
 
-				if (count == 0) {
+				if (film == null) {
 					System.out.println("\t*****No films found matching" + " \"" + keyword.toUpperCase() + "\""
 							+ ", please search again.*****");
 					film = new Film();
