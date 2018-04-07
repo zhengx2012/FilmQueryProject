@@ -9,6 +9,7 @@ import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
+	static Scanner input = new Scanner(System.in);
 
 	DatabaseAccessor db = new DatabaseAccessorObject();
 
@@ -29,7 +30,6 @@ public class FilmQueryApp {
 	// }
 
 	private void launch() {
-		Scanner input = new Scanner(System.in);
 		int lookUp = -1;
 		
 		do {
@@ -39,44 +39,46 @@ public class FilmQueryApp {
 			System.out.println("\t2. Look up films by keywords?");
 			System.out.println("\t3. Exit");
 			lookUp = input.nextInt();
+			startUserInterface(lookUp);
 
-			if ((lookUp < 1) || (lookUp > 3)) {
-				System.out.println("\n********Please enter a number from 1-3********");
-				launch();
-			} 
-			
-			else if (lookUp == 1) {
-				System.out.print("\nWhat is the film ID? ");
-				int filmId = input.nextInt();
-				Film film = db.getFilmById(filmId);
-//				Film cast = db.getActorsByFilmId(filmId);
-				printFilm(film);
-
-			} 
-			
-			else if (lookUp == 2) {
-				System.out.print("\nWhat is the keyword you would like to look up? ");
-				String keyword = input.next();
-				Film film = db.getFilmByKeyword(keyword);
-				if (film == null) {
-					
-				}
-				printFilm(film);
-			} 
-			
-			
-			else if (lookUp == 3) {
-				System.out.print("\n*********Thanks for checking us out, seeya!*********");
-				System.exit(0);
-			}
 		} while (lookUp != 0);
 
-		startUserInterface(input);
 
 		input.close();
 	}
 
-	private void startUserInterface(Scanner input) {
+	private void startUserInterface(int lookUp) {
+		if ((lookUp < 1) || (lookUp > 3)) {
+			System.out.println("\n********Please enter a number from 1-3********");
+			launch();
+		} 
+		
+		else if (lookUp == 1) {
+			System.out.print("\nWhat is the film ID? ");
+			int filmId = input.nextInt();
+			Film film = db.getFilmById(filmId);
+			if (film == null) {
+				startUserInterface(lookUp);
+			}
+			printFilm(film);
+
+		} 
+		
+		else if (lookUp == 2) {
+			System.out.print("\nWhat is the keyword you would like to look up? ");
+			String keyword = input.next();
+			Film film = db.getFilmByKeyword(keyword);
+			if (film == null) {
+				startUserInterface(lookUp);
+			}
+			printFilm(film);
+		} 
+		
+		
+		else if (lookUp == 3) {
+			System.out.print("\n*********Thanks for checking us out, seeya!*********");
+			System.exit(0);
+		}
 
 	}
 
