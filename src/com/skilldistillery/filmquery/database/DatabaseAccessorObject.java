@@ -18,31 +18,45 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmById(int filmId) {
-		String sql = "SELECT id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features FROM film WHERE id = ?";
+		// String sql = "SELECT id, title, description, release_year, language_id,
+		// rental_duration, rental_rate, length, replacement_cost, rating,
+		// special_features FROM film WHERE id = ?";
+		String sql = "SELECT title, release_year, rating, description FROM film WHERE id = ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				int id = rs.getInt(1);
-				String title = rs.getString(2);
-				String description = rs.getString(3);
-				Date releaseYear = rs.getDate(4);
-				int languageId = rs.getInt(5);
-				int rentalDuration = rs.getInt(6);
-				double rentalRate = rs.getDouble(7);
-				int length = rs.getInt(8);
-				double replaceCost = rs.getDouble(9);
-				String rating = rs.getString(10);
-				String specialFeatures = rs.getString(11);
+			// if (rs.next()) {
+			// int id = rs.getInt(1);
+			// String title = rs.getString(2);
+			// String description = rs.getString(3);
+			// Date releaseYear = rs.getDate(4);
+			// int languageId = rs.getInt(5);
+			// int rentalDuration = rs.getInt(6);
+			// double rentalRate = rs.getDouble(7);
+			// int length = rs.getInt(8);
+			// double replaceCost = rs.getDouble(9);
+			// String rating = rs.getString(10);
+			// String specialFeatures = rs.getString(11);
+			while (rs.next()) {
+				String title = rs.getString(1);
+				Date releaseYear = rs.getDate(2);
+				String rating = rs.getString(3);
+				String description = rs.getString(4);
 
-				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
-						replaceCost, rating, specialFeatures);
+				// film = new Film(id, title, description, releaseYear, languageId,
+				// rentalDuration, rentalRate, length,
+				// replaceCost, rating, specialFeatures);
+				film = new Film(title, releaseYear, rating, description);
 				List<Actor> cast = getActorsByFilmId(film.getId());
+				film = new Film(title, releaseYear, rating, cast, description);
 
 			}
+			rs.close();
+			stmt.close();
+			conn.close();
 		} catch (SQLException sqlex) {
 			System.err.println("Error retrieving film id " + filmId);
 			sqlex.printStackTrace();
@@ -103,7 +117,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				int id = rs.getInt(1);
 				String fName = rs.getString(2);
 				String lName = rs.getString(3);
@@ -124,7 +138,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmByKeyword(String keyword) {
-		String sql = "SELECT id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features FROM film WHERE title like ? OR description like ?";
+		String sql = "SELECT title, release_year, rating, description FROM film WHERE title like ? OR description like ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -132,24 +146,36 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.setString(1, "%" + keyword + "%");
 			stmt.setString(2, "%" + keyword + "%");
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				int id = rs.getInt(1);
-				String title = rs.getString(2);
-				String description = rs.getString(3);
-				Date releaseYear = rs.getDate(4);
-				int languageId = rs.getInt(5);
-				int rentalDuration = rs.getInt(6);
-				double rentalRate = rs.getDouble(7);
-				int length = rs.getInt(8);
-				double replaceCost = rs.getDouble(9);
-				String rating = rs.getString(10);
-				String specialFeatures = rs.getString(11);
+			
+			int count = 0;
 
-				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
-						replaceCost, rating, specialFeatures);
+			OUTERLOOP: while (count == 0) {
+				while (rs.next()) {
+					String title = rs.getString(1);
+					Date releaseYear = rs.getDate(2);
+					String rating = rs.getString(3);
+					String description = rs.getString(4);
+					
+					film = new Film(title, releaseYear, rating, description);
+					List<Actor> cast = getActorsByFilmId(film.getId());
+					film = new Film(title, releaseYear, rating, cast, description);
+					count++;
+				}
+
+				rs.close();
+				stmt.close();
+				conn.close();
+
+				if (count == 0) {
+					System.out.println("\t*****No matching films found matching"+" \"" + keyword.toUpperCase() +"\"" +", please search again.*****");
+					break OUTERLOOP;
+				}
+				count++;
 
 			}
-		} catch (SQLException sqlex) {
+		}
+
+		catch (SQLException sqlex) {
 			System.err.println("Error retrieving film id " + keyword);
 			sqlex.printStackTrace();
 		}

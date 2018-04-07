@@ -17,22 +17,6 @@ public class Film {
 	private String specialFeatures;
 	private List<Actor> cast;
 
-	public double getRentalRate() {
-		return rentalRate;
-	}
-
-	public void setRentalRate(double rentalRate) {
-		this.rentalRate = rentalRate;
-	}
-
-	public List<Actor> getCast() {
-		return cast;
-	}
-
-	public void setCast(List<Actor> cast) {
-		this.cast = cast;
-	}
-
 	public Film() {
 
 	}
@@ -52,6 +36,23 @@ public class Film {
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
 	}
+
+	public Film(String title, Date releaseYear, String rating, List<Actor> cast, String description) {
+		super();
+		this.title = title;
+		this.releaseYear = releaseYear;
+		this.rating = rating;
+		this.cast = cast;
+		this.description = description;
+	}
+	public Film(String title, Date releaseYear, String rating, String description) {
+		super();
+		this.title = title;
+		this.releaseYear = releaseYear;
+		this.rating = rating;
+		this.description = description;
+	}
+
 
 	public int getId() {
 		return id;
@@ -101,6 +102,13 @@ public class Film {
 		this.rentalDuration = rentalDuration;
 	}
 
+	public double getRentalRate() {
+		return rentalRate;
+	}
+
+	public void setRentalRate(double rentalRate) {
+		this.rentalRate = rentalRate;
+	}
 
 	public int getLength() {
 		return length;
@@ -132,6 +140,14 @@ public class Film {
 
 	public void setSpecialFeatures(String specialFeatures) {
 		this.specialFeatures = specialFeatures;
+	}
+
+	public List<Actor> getCast() {
+		return cast;
+	}
+
+	public void setCast(List<Actor> cast) {
+		this.cast = cast;
 	}
 
 	@Override
@@ -201,37 +217,50 @@ public class Film {
 		return true;
 	}
 
-	@Override
+//	@Override
+//	public String toString() {
+//		StringBuilder builder = new StringBuilder();
+//		builder.append("Film id: ");
+//		builder.append(id);
+//		builder.append(", title: ");
+//		builder.append(title);
+//		builder.append(", description: ");
+//		builder.append(description);
+//		builder.append(", releaseYear: ");
+//		builder.append(releaseYear);
+//		builder.append(", languageId: ");
+//		builder.append(languageId);
+//		builder.append(", rentalDuration: ");
+//		builder.append(rentalDuration);
+//		builder.append(", rentalRate: $");
+//		builder.append(rentalRate);
+//		builder.append(", length: ");
+//		builder.append(length);
+//		builder.append(", replacementCost: $");
+//		builder.append(replacementCost);
+//		builder.append(", rating: ");
+//		builder.append(rating);
+//		builder.append(", specialFeatures: ");
+//		builder.append(specialFeatures);
+//		builder.append(", cast: ");
+//		builder.append(cast);
+//		builder.append(".");
+//		return builder.toString();
+//	}
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Film id: ");
-		builder.append(id);
-		builder.append(", title: ");
+		builder.append("\nTitle: ");
 		builder.append(title);
-		builder.append(", description: ");
-		builder.append(description);
-		builder.append(", releaseYear: ");
+		builder.append("\nRelease Year: ");
 		builder.append(releaseYear);
-		builder.append(", languageId: ");
-		builder.append(languageId);
-		builder.append(", rentalDuration: ");
-		builder.append(rentalDuration);
-		builder.append(", rentalRate: ");
-		builder.append(rentalRate);
-		builder.append(", length: ");
-		builder.append(length);
-		builder.append(", replacementCost: $");
-		builder.append(replacementCost);
-		builder.append(", rating: ");
+		builder.append("\nRating: ");
 		builder.append(rating);
-		builder.append(", specialFeatures: ");
-		builder.append(specialFeatures);
-		builder.append(", cast: ");
+		builder.append("\nCast: ");
 		builder.append(cast);
-		builder.append(".");
+		builder.append("\nDescription: ");
+		builder.append(description);
 		return builder.toString();
 	}
-
-	
 
 }
