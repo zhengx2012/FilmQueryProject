@@ -18,7 +18,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmById(int filmId) {
-		String sql = "SELECT title, release_year, rating, description FROM film WHERE id = ?";
+		String sql = "SELECT title, release_year, rating, description, id  FROM film WHERE id = ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -26,29 +26,31 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
 			int count = 0;
-			
-			OUTERLOOP: while( count == 0) {
-			while (rs.next()) {
-				String title = rs.getString(1);
-				Date releaseYear = rs.getDate(2);
-				String rating = rs.getString(3);
-				String description = rs.getString(4);
+			OUTERLOOP: while (count == 0) {
+				while (rs.next()) {
+					String title = rs.getString(1);
+					Date releaseYear = rs.getDate(2);
+					String rating = rs.getString(3);
+					String description = rs.getString(4);
 
-				film = new Film(title, releaseYear, rating, description);
-				List<Actor> cast = getActorsByFilmId(film.getId());
-				film = new Film(title, releaseYear, rating, cast, description);
+					film = new Film(title, releaseYear, rating, description);
+					List<Actor> cast = getActorsByFilmId(film.getId());
+					film = new Film(title, releaseYear, rating, cast, description);
+
+				}
+				rs.close();
+				stmt.close();
+				conn.close();
+				if (count == 0) {
+					System.out.println("\t*****No films found matching Film ID:" + " \"" + filmId + "\""
+							+ ", please search again.*****");
+					film = new Film();
+					break OUTERLOOP;
+				}
+				count++;
 
 			}
-			rs.close();
-			stmt.close();
-			conn.close();
-			if (count == 0) {
-				System.out.println("\t*****No films found matching Film ID:"+" \"" + filmId +"\"" +", please search again.*****");
-				break OUTERLOOP;
-			}
-			count++;
-			
-			}
+
 		} catch (SQLException sqlex) {
 			System.err.println("Error retrieving film id " + filmId);
 			sqlex.printStackTrace();
@@ -138,7 +140,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.setString(1, "%" + keyword + "%");
 			stmt.setString(2, "%" + keyword + "%");
 			ResultSet rs = stmt.executeQuery();
-			
+
 			int count = 0;
 
 			OUTERLOOP: while (count == 0) {
@@ -147,7 +149,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					Date releaseYear = rs.getDate(2);
 					String rating = rs.getString(3);
 					String description = rs.getString(4);
-					
+
 					film = new Film(title, releaseYear, rating, description);
 					List<Actor> cast = getActorsByFilmId(film.getId());
 					film = new Film(title, releaseYear, rating, cast, description);
@@ -159,7 +161,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				conn.close();
 
 				if (count == 0) {
-					System.out.println("\t*****No films found matching"+" \"" + keyword.toUpperCase() +"\"" +", please search again.*****");
+					System.out.println("\t*****No films found matching" + " \"" + keyword.toUpperCase() + "\""
+							+ ", please search again.*****");
+					film = new Film();
 					break OUTERLOOP;
 				}
 				count++;
