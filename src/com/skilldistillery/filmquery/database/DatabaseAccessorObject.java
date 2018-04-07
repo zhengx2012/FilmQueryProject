@@ -18,7 +18,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmById(int filmId) {
-		String sql = "SELECT title, release_year, rating, description, id  FROM film WHERE id = ?";
+		String sql = "SELECT f.title, f.release_year, f.rating, f.description, l.name FROM film f JOIN language l ON f.language_id = l.id WHERE f.id = ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -32,15 +32,18 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					Date releaseYear = rs.getDate(2);
 					String rating = rs.getString(3);
 					String description = rs.getString(4);
+					String language = rs.getString(5);
 
-					film = new Film(title, releaseYear, rating, description);
+					film = new Film(title, releaseYear, rating, language, description);
 					List<Actor> cast = getActorsByFilmId(film.getId());
-					film = new Film(title, releaseYear, rating, cast, description);
+					film = new Film(title, releaseYear, rating, cast, language, description);
+					count++;
 
 				}
 				rs.close();
 				stmt.close();
 				conn.close();
+				
 				if (count == 0) {
 					System.out.println("\t*****No films found matching Film ID:" + " \"" + filmId + "\""
 							+ ", please search again.*****");
@@ -132,7 +135,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmByKeyword(String keyword) {
-		String sql = "SELECT title, release_year, rating, description FROM film WHERE title like ? OR description like ?";
+		String sql = "SELECT f.title, f.release_year, f.rating, f.description, l.name  FROM film f JOIN language l ON f.language_id = l.id WHERE title like ? OR description like ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -149,10 +152,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					Date releaseYear = rs.getDate(2);
 					String rating = rs.getString(3);
 					String description = rs.getString(4);
+					String language = rs.getString(5);
 
-					film = new Film(title, releaseYear, rating, description);
+					film = new Film(title, releaseYear, language, rating, description);
 					List<Actor> cast = getActorsByFilmId(film.getId());
-					film = new Film(title, releaseYear, rating, cast, description);
+					film = new Film(title, releaseYear, rating, cast, language, description);
 					count++;
 				}
 
