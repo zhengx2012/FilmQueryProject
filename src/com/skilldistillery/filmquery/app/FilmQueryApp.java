@@ -64,11 +64,14 @@ public class FilmQueryApp {
 		else if (lookUp == 2) {
 			System.out.print("\nWhat is the keyword you would like to look up? ");
 			String keyword = input.next();
-			Film film = db.getFilmByKeyword(keyword);
-			if (film == null) {
+			List<Film> filmList = db.getFilmByKeyword(keyword);
+			if (filmList == null) {
 				startUserInterface(lookUp);
 			}
-			printFilm(film);
+			for (Film film : filmList) {
+				printFilm(film);
+				
+			}
 		}
 
 		else if (lookUp == 3) {

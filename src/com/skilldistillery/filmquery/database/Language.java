@@ -12,6 +12,11 @@ public class Language {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public Language(String name) {
+		super();
+		this.name = name;
+	}
 
 	public int getId() {
 		return id;
@@ -60,9 +65,6 @@ public class Language {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Language ID: ");
-		builder.append(id);
-		builder.append(", Language: ");
 		builder.append(name);
 		return builder.toString();
 	}

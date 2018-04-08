@@ -3,6 +3,8 @@ package com.skilldistillery.filmquery.entities;
 import java.sql.Date;
 import java.util.List;
 
+import com.skilldistillery.filmquery.database.Language;
+
 public class Film {
 	private int id;
 	private String title;
@@ -16,7 +18,7 @@ public class Film {
 	private String rating;
 	private String specialFeatures;
 	private List<Actor> cast;
-	private String language;
+	private Language language;
 
 	public Film() {
 
@@ -38,7 +40,7 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 
-	public Film(String title, Date releaseYear, String rating, List<Actor> cast, String lanaguge, String description) {
+	public Film(String title, Date releaseYear, String rating, List<Actor> cast, Language lanaguge, String description) {
 		super();
 		this.title = title;
 		this.releaseYear = releaseYear;
@@ -47,7 +49,7 @@ public class Film {
 		this.language = lanaguge;
 		this.description = description;
 	}
-	public Film(String title, Date releaseYear, String rating, String lanaguge, String description) {
+	public Film(String title, Date releaseYear, String rating, Language lanaguge, String description) {
 		super();
 		this.title = title;
 		this.releaseYear = releaseYear;
@@ -266,11 +268,11 @@ public class Film {
 //		return builder.toString();
 //	}
 
-	public String getLanguage() {
+	public Language getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(String language) {
+	public void setLanguage(Language language) {
 		this.language = language;
 	}
 
