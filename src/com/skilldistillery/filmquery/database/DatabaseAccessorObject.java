@@ -34,7 +34,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					String description = rs.getString(4);
 					String language = rs.getString(5);
 					int id = rs.getInt(6);
-					
+
 					List<Actor> cast = getActorsByFilmId(id);
 					film = new Film(title, releaseYear, rating, cast, language, description);
 					count++;
@@ -43,14 +43,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				rs.close();
 				stmt.close();
 				conn.close();
-				
-				if (count == 0) {
+
+				if (film == null) {
 					System.out.println("\t*****No films found matching Film ID:" + " \"" + filmId + "\""
 							+ ", please search again.*****");
 					film = new Film();
 					break OUTERLOOP;
 				}
-				count++;
 
 			}
 
@@ -144,38 +143,30 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.setString(2, "%" + keyword + "%");
 			ResultSet rs = stmt.executeQuery();
 
-			int count = 0;
+			while (rs.next()) {
+				String title = rs.getString(1);
+				Date releaseYear = rs.getDate(2);
+				String rating = rs.getString(3);
+				String description = rs.getString(4);
+				String language = rs.getString(5);
+				int id = rs.getInt(6);
 
-			OUTERLOOP: while (count == 0) {
-				while (rs.next()) {
-					String title = rs.getString(1);
-					Date releaseYear = rs.getDate(2);
-					String rating = rs.getString(3);
-					String description = rs.getString(4);
-					String language = rs.getString(5);
-					int id = rs.getInt(6);
-
-					List<Actor> cast = getActorsByFilmId(id);
-					film = new Film(title, releaseYear, rating, cast, language, description);
-				}
-
-				rs.close();
-				stmt.close();
-				conn.close();
-
-				if (film == null) {
-					System.out.println("\t*****No films found matching" + " \"" + keyword.toUpperCase() + "\""
-							+ ", please search again.*****");
-					film = new Film();
-					break OUTERLOOP;
-				}
-				count++;
-
+				List<Actor> cast = getActorsByFilmId(id);
+				film = new Film(title, releaseYear, rating, cast, language, description);
 			}
+
+			if (film == null) {
+				System.out.println("\t*****No films found matching" + " \"" + keyword.toUpperCase() + "\""
+						+ ", please search again.*****");
+				film = new Film();
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
 		}
 
 		catch (SQLException sqlex) {
-			System.err.println("Error retrieving film id " + keyword);
+			System.err.println("Error retrieving film keyword " + keyword.toUpperCase());
 			sqlex.printStackTrace();
 		}
 

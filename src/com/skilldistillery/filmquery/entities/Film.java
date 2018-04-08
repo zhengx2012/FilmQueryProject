@@ -284,7 +284,7 @@ public class Film {
 		builder.append(rating);
 		builder.append("\nLanguage: ");
 		builder.append(language);
-		builder.append("\nCast: ");
+		builder.append("\nPlayed by: ");
 		builder.append(cast);
 		builder.append("\nDescription: ");
 		builder.append(description);
