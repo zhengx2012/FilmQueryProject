@@ -152,6 +152,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				int id = rs.getInt(6);
 
 				List<Actor> cast = getActorsByFilmId(id);
+				
 				film = new Film(title, releaseYear, rating, cast, language, description);
 			}
 
