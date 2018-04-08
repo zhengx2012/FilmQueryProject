@@ -1,7 +1,6 @@
 package com.skilldistillery.filmquery.database;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmById(int filmId) {
-		String sql = "SELECT f.title, YEAR(f.release_year), f.rating, f.description, f.id, language_id FROM film f WHERE f.id = ?";
+		String sql = "SELECT f.title, f.release_year, f.rating, f.description, f.id, language_id FROM film f WHERE f.id = ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -27,7 +26,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				String title = rs.getString(1);
-				Date releaseYear = rs.getDate(2);
+				int releaseYear = rs.getInt(2);
 				String rating = rs.getString(3);
 				String description = rs.getString(4);
 				int id = rs.getInt(5);
@@ -137,7 +136,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 			while (rs.next()) {
 				String title = rs.getString(1);
-				Date releaseYear = rs.getDate(2);
+				int releaseYear = rs.getInt(2);
 				String rating = rs.getString(3);
 				String description = rs.getString(4);
 				int id = rs.getInt(5);

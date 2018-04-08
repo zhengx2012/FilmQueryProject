@@ -1,6 +1,7 @@
 package com.skilldistillery.filmquery.entities;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import com.skilldistillery.filmquery.database.Language;
@@ -9,7 +10,7 @@ public class Film {
 	private int id;
 	private String title;
 	private String description;
-	private Date releaseYear;
+	private int releaseYear;
 	private int languageId;
 	private int rentalDuration;
 	private double rentalRate;
@@ -24,7 +25,7 @@ public class Film {
 
 	}
 
-	public Film(int id, String title, String description, Date releaseYear, int languageId, int rentalDuration,
+	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration,
 			double rentaRate, int length, double replacementCost, String rating, String specialFeatures) {
 		super();
 		this.id = id;
@@ -40,7 +41,7 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 
-	public Film(String title, Date releaseYear, String rating, List<Actor> cast, Language lanaguge, String description) {
+	public Film(String title, int releaseYear, String rating, List<Actor> cast, Language lanaguge, String description) {
 		super();
 		this.title = title;
 		this.releaseYear = releaseYear;
@@ -49,7 +50,7 @@ public class Film {
 		this.language = lanaguge;
 		this.description = description;
 	}
-	public Film(String title, Date releaseYear, String rating, Language lanaguge, String description) {
+	public Film(String title, int releaseYear, String rating, Language lanaguge, String description) {
 		super();
 		this.title = title;
 		this.releaseYear = releaseYear;
@@ -83,11 +84,11 @@ public class Film {
 		this.description = description;
 	}
 
-	public Date getReleaseYear() {
+	public int getReleaseYear() {
 		return releaseYear;
 	}
 
-	public void setReleaseYear(Date releaseYear) {
+	public void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
 	}
 
@@ -166,7 +167,7 @@ public class Film {
 		result = prime * result + languageId;
 		result = prime * result + length;
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
-		result = prime * result + ((releaseYear == null) ? 0 : releaseYear.hashCode());
+		result = prime * result + releaseYear;
 		result = prime * result + rentalDuration;
 		long temp;
 		temp = Double.doubleToLongBits(rentalRate);
@@ -213,10 +214,7 @@ public class Film {
 				return false;
 		} else if (!rating.equals(other.rating))
 			return false;
-		if (releaseYear == null) {
-			if (other.releaseYear != null)
-				return false;
-		} else if (!releaseYear.equals(other.releaseYear))
+		if (releaseYear != other.releaseYear)
 			return false;
 		if (rentalDuration != other.rentalDuration)
 			return false;
