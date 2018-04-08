@@ -25,32 +25,26 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
-			int count = 0;
-			OUTERLOOP: while (count == 0) {
-				while (rs.next()) {
-					String title = rs.getString(1);
-					Date releaseYear = rs.getDate(2);
-					String rating = rs.getString(3);
-					String description = rs.getString(4);
-					int id = rs.getInt(5);
+			while (rs.next()) {
+				String title = rs.getString(1);
+				Date releaseYear = rs.getDate(2);
+				String rating = rs.getString(3);
+				String description = rs.getString(4);
+				int id = rs.getInt(5);
 
-					List<Actor> cast = getActorsByFilmId(id);
-					Language language = getLanguageByFilmId(id);
-					film = new Film(title, releaseYear, rating, cast, language, description);
-					count++;
+				List<Actor> cast = getActorsByFilmId(id);
+				Language language = getLanguageByFilmId(id);
+				film = new Film(title, releaseYear, rating, cast, language, description);
 
-				}
-				rs.close();
-				stmt.close();
-				conn.close();
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
 
-				if (film == null) {
-					System.out.println("\t*****No films found matching Film ID:" + " \"" + filmId + "\""
-							+ ", please search again.*****");
-					film = new Film();
-					break OUTERLOOP;
-				}
-
+			if (film == null) {
+				System.out.println("\t*****No films found matching Film ID:" + " \"" + filmId + "\""
+						+ ", please search again.*****");
+				film = new Film();
 			}
 
 		} catch (SQLException sqlex) {
