@@ -18,7 +18,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmById(int filmId) {
-		String sql = "SELECT f.title, f.release_year, f.rating, f.description, f.id FROM film f WHERE f.id = ?";
+		String sql = "SELECT f.title, YEAR(f.release_year), f.rating, f.description, f.id, language_id FROM film f WHERE f.id = ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -31,9 +31,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				String rating = rs.getString(3);
 				String description = rs.getString(4);
 				int id = rs.getInt(5);
+				int lanaguageId = rs.getInt(6);
 
 				List<Actor> cast = getActorsByFilmId(id);
-				Language language = getLanguageByFilmId(id);
+				Language language = getLanguageByFilmId(lanaguageId);
 				film = new Film(title, releaseYear, rating, cast, language, description);
 
 			}
@@ -125,7 +126,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public List<Film> getFilmByKeyword(String keyword) {
 		List<Film> filmsList = new ArrayList<>();
-		String sql = "SELECT f.title, f.release_year, f.rating, f.description, f.id FROM film f WHERE f.title like ? OR f.description like ?";
+		String sql = "SELECT f.title, f.release_year, f.rating, f.description, f.id, f.language_id FROM film f WHERE f.title like ? OR f.description like ?";
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -140,9 +141,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				String rating = rs.getString(3);
 				String description = rs.getString(4);
 				int id = rs.getInt(5);
+				int lanaguageId = rs.getInt(6);
 
 				List<Actor> cast = getActorsByFilmId(id);
-				Language language = getLanguageByFilmId(id);
+				Language language = getLanguageByFilmId(lanaguageId);
 				film = new Film(title, releaseYear, rating, cast, language, description);
 				filmsList.add(film);
 			}
@@ -183,7 +185,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.close();
 			conn.close();
 		} catch (SQLException sqlex) {
-			System.err.println("Error retrieving LANGUAGE ID." + filmId);
+			System.err.println("Error retrieving LANGUAGE ID " + filmId);
 			sqlex.printStackTrace();
 		}
 
