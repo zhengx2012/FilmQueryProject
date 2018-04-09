@@ -254,36 +254,35 @@ public class Film {
 		return true;
 	}
 
-//	@Override
-//	public String toString() {
-//		StringBuilder builder = new StringBuilder();
-//		builder.append("Film id: ");
-//		builder.append(id);
-//		builder.append(", title: ");
-//		builder.append(title);
-//		builder.append(", description: ");
-//		builder.append(description);
-//		builder.append(", releaseYear: ");
-//		builder.append(releaseYear);
-//		builder.append(", languageId: ");
-//		builder.append(languageId);
-//		builder.append(", rentalDuration: ");
-//		builder.append(rentalDuration);
-//		builder.append(", rentalRate: $");
-//		builder.append(rentalRate);
-//		builder.append(", length: ");
-//		builder.append(length);
-//		builder.append(", replacementCost: $");
-//		builder.append(replacementCost);
-//		builder.append(", rating: ");
-//		builder.append(rating);
-//		builder.append(", specialFeatures: ");
-//		builder.append(specialFeatures);
-//		builder.append(", cast: ");
-//		builder.append(cast);
-//		builder.append(".");
-//		return builder.toString();
-//	}
+
+	public String toString1() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Film id: ");
+		builder.append(id);
+		builder.append("\nTitle: ");
+		builder.append(title);
+		builder.append("\nDescription: ");
+		builder.append(description);
+		builder.append("\nRelease Year: ");
+		builder.append(releaseYear);
+		builder.append("\nLanguage Id: ");
+		builder.append(languageId);
+		builder.append("\nRental Duration: ");
+		builder.append(rentalDuration);
+		builder.append("\nRental Rate: $");
+		builder.append(rentalRate);
+		builder.append("\nLength: ");
+		builder.append(length);
+		builder.append("\nReplacementCost: $");
+		builder.append(replacementCost);
+		builder.append("\nRating: ");
+		builder.append(rating);
+		builder.append("\nSpecialFeatures: ");
+		builder.append(specialFeatures);
+		builder.append("\nCast: ");
+		builder.append(cast);
+		return builder.toString();
+	}
 
 	public Language getLanguage() {
 		return language;
@@ -292,7 +291,8 @@ public class Film {
 	public void setLanguage(Language language) {
 		this.language = language;
 	}
-
+	
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nTitle: ");

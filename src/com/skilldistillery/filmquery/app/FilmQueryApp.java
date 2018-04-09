@@ -34,10 +34,12 @@ public class FilmQueryApp {
 
 		do {
 
-			System.out.println("\nWould you like to:");
+			System.out.println("\n**************************************************");
+			System.out.println("Would you like to:");
 			System.out.println("\t1. Look up films by ID?");
 			System.out.println("\t2. Look up films by keywords?");
 			System.out.println("\t3. Exit");
+			System.out.println("**************************************************");
 			lookUp = input.nextInt();
 			startUserInterface(lookUp);
 
@@ -85,9 +87,11 @@ public class FilmQueryApp {
 	}
 	
 	private void subMenu(int filmId) {
+		System.out.println("**************************************************");
 		System.out.println("Would you like to: ");
-		System.out.println("\n1. Look at full film details.");
-		System.out.println("\n2. Return to the main menu.");
+		System.out.println("\t1. Look at full film details.");
+		System.out.println("\t2. Return to the main menu.");
+		System.out.println("**************************************************");
 		int subOption = input.nextInt();
 		
 		if ((subOption < 1) || (subOption > 2)) {
@@ -97,7 +101,7 @@ public class FilmQueryApp {
 		else if (subOption == 1) {
 			List<Film> filmList = db.getFullFilmById(filmId);
 			for (Film film : filmList) {
-				printFilm(film);
+				fullFilmDetails(film);
 			}
 			
 		}
@@ -107,8 +111,8 @@ public class FilmQueryApp {
 		
 	}
 	
-	private void fullFilmDetails(int filmId) {
-		
+	private void fullFilmDetails(Film film) {
+		System.out.println(film.toString1());
 	}
 
 	private void printFilm(Film film) {
